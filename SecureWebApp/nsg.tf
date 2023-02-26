@@ -1,4 +1,4 @@
- // APPNSG
+// APPNSG
 resource "azurerm_network_security_group" "webnsg" {
   name                = "WebNSG"
   location            = var.location
@@ -20,7 +20,7 @@ resource "azurerm_network_security_rule" "webNsgInbound" {
 }
 
 resource "azurerm_network_interface_security_group_association" "webNSGAssoc" {
-  network_interface_id = azurerm_network_interface.webserverNIC.id
+  network_interface_id      = azurerm_network_interface.webserverNIC.id
   network_security_group_id = azurerm_network_security_group.webnsg.id
 }
 
@@ -46,6 +46,6 @@ resource "azurerm_network_security_rule" "dbNsgInbound" {
 }
 
 resource "azurerm_network_interface_security_group_association" "dbNSGAssoc" {
-  network_interface_id = azurerm_network_interface.dbserverNIC.id
+  network_interface_id      = azurerm_network_interface.dbserverNIC.id
   network_security_group_id = azurerm_network_security_group.dbnsg.id
 }

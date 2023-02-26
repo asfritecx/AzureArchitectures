@@ -52,11 +52,11 @@ resource "azurerm_application_gateway" "lettyAppGW" {
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
     public_ip_address_id = azurerm_public_ip.appGWPIP.id
-    private_ip_address = "10.10.200.4"
   }
 
   backend_address_pool {
     name = local.backend_address_pool_name
+    ip_addresses = [ var.webcidr ]
   }
 
   backend_http_settings {
@@ -82,5 +82,13 @@ resource "azurerm_application_gateway" "lettyAppGW" {
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
     priority = 100
+  }
+
+  waf_configuration {
+    enabled = true
+    firewall_mode = "Prevention"
+    rule_set_type = "OWASP"
+    rule_set_version = "3.2"
+    file_upload_limit_mb = 50
   }
 }

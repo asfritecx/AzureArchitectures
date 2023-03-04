@@ -13,6 +13,9 @@ vm_password     = "P@ssw0rd1234"
 ```
 4. Run `Terraform init`
 5. Run `Terraform apply --auto-approve`
+6. After Deploying it will print out the Application Gateway Public IP Address
+
+Accessing the APP Gateway public ip over HTTP should bring up the Microsoft IIS Page
 
 ### Things Not Yet Done & Exploring
 

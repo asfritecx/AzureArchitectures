@@ -38,7 +38,7 @@ resource "azurerm_network_security_rule" "dbNsgInbound" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "1433"
+  destination_port_range      = "1433 - 1434 "
   source_address_prefix       = var.webcidr
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.lettyRG.name

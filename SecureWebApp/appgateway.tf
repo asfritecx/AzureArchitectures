@@ -1,9 +1,50 @@
-
+// App Gateway Subnet
 resource "azurerm_subnet" "appGwSubnet" {
   name                 = "AppGWSubnet"
   resource_group_name  = azurerm_resource_group.lettyHubRG.name
   virtual_network_name = azurerm_virtual_network.hubVnet.name
   address_prefixes     = ["10.10.200.0/24"]
+}
+
+// App Gateway Subnet NSG
+resource "azurerm_network_security_group" "appGwNSG" {
+  name                = "AppGWNSG"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.lettyHubRG.name
+}
+
+resource "azurerm_network_security_rule" "appGWNsgInbound2" {
+  name                        = "RequiredAzurePorts"
+  priority                    = 450
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "65200 - 65535"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.lettyHubRG.name
+  network_security_group_name = azurerm_network_security_group.appGwNSG.name
+}
+
+resource "azurerm_network_security_rule" "appGWNsgInbound" {
+  name                        = "AllowHTTP"
+  priority                    = 500
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.lettyHubRG.name
+  network_security_group_name = azurerm_network_security_group.appGwNSG.name
+}
+
+// Associate to App GW Subnet
+resource "azurerm_subnet_network_security_group_association" "appGWNSGAssoc" {
+  subnet_id = azurerm_subnet.appGwSubnet.id
+  network_security_group_id = azurerm_network_security_group.appGwNSG.id
 }
 
 resource "azurerm_public_ip" "appGWPIP" {
@@ -56,7 +97,7 @@ resource "azurerm_application_gateway" "lettyAppGW" {
 
   backend_address_pool {
     name = local.backend_address_pool_name
-    ip_addresses = [ var.webcidr ]
+    ip_addresses = [ var.appGWbackendpool1 ]
   }
 
   backend_http_settings {

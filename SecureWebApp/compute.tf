@@ -44,7 +44,7 @@ resource "azurerm_virtual_machine_extension" "vmext_powershellinstallfeature" {
 
   settings = <<SETTINGS
     {
-        "commandToExecute": "powershell -ExecutionPolicy Unrestricted Install-WindowsFeature -Name Web-Server -IncludeAllSubFeature -IncludeManagementTools"
+        "commandToExecute": "powershell -ExecutionPolicy Unrestricted Install-WindowsFeature -Name Web-Server -IncludeManagementTools"
     }
 SETTINGS
 }

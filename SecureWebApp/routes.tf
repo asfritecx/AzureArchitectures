@@ -19,7 +19,7 @@ resource "azurerm_route" "frontendToFirewall" {
   name                   = "RouteAllToFirewall"
   resource_group_name    = azurerm_resource_group.lettyRG.name
   route_table_name       = azurerm_route_table.frontendRT.name
-  address_prefix         = "10.0.0.0/16"
+  address_prefix         = var.vnetcidr
   next_hop_type          = "VirtualAppliance"
   next_hop_in_ip_address = var.firewallPvtIP
 }
@@ -62,7 +62,7 @@ resource "azurerm_route" "backendToFirewall" {
   name                   = "RouteAllToFirewall"
   resource_group_name    = azurerm_resource_group.lettyRG.name
   route_table_name       = azurerm_route_table.backendRT.name
-  address_prefix         = "10.0.0.0/16"
+  address_prefix         = var.vnetcidr
   next_hop_type          = "VirtualAppliance"
   next_hop_in_ip_address = var.firewallPvtIP
 }

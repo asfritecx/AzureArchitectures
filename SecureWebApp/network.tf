@@ -57,6 +57,8 @@ resource "azurerm_network_interface" "dbserverNIC" {
 // VNET Peering
 resource "azurerm_virtual_network_peering" "peerhubtoletty" {
   name                      = "peerhubtoletty"
+  allow_virtual_network_access = true
+  allow_forwarded_traffic = true
   resource_group_name       = azurerm_resource_group.lettyHubRG.name
   virtual_network_name      = azurerm_virtual_network.hubVnet.name
   remote_virtual_network_id = azurerm_virtual_network.lettyVNET.id
